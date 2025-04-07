@@ -1,8 +1,10 @@
+import Exercises from "./components/Exercises";
+
 export default function App() {
   return (
     <div>
-      <h1 className="text-red-500">Hejsan</h1>
-      <button className="btn btn-primary">Daisyui</button>
+      <h1 className="text-2xl font-semibold text-center py-3">Training App</h1>
+      <Exercises />
     </div>
   );
 }

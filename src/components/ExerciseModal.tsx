@@ -1,9 +1,31 @@
 import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { saveExercise } from "../services/fakeExerciseService";
 
-export default function ExerciseModal() {
+const schema = z.object({
+  name: z.string().min(1, "Name is required"),
+});
+
+type FormData = z.infer<typeof schema>;
+
+interface Props {
+  onSave(): void;
+}
+
+export default function ExerciseModal({ onSave }: Props) {
   const modalRef = useRef<HTMLDialogElement>(null);
+  const { register, handleSubmit, reset } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
-  modalRef.current?.showModal();
+  function onSubmit(data: FormData) {
+    saveExercise(data);
+    onSave();
+    modalRef.current?.close();
+    reset();
+  }
 
   return (
     <>
@@ -14,10 +36,19 @@ export default function ExerciseModal() {
         New Exercise
       </button>
       <dialog id="modal" className="modal" ref={modalRef}>
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click outside to close</p>
-        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="modal-box place-items-center"
+        >
+          <h1 className="font-bold ">New Exercise</h1>
+          <input
+            {...register("name")}
+            placeholder="Name of exercise..."
+            className="block input my-4"
+          />
+
+          <button className="btn btn-secondary ">Save</button>
+        </form>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
         </form>

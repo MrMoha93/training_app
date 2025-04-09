@@ -30,7 +30,7 @@ export function getExercise(id: string) {
   return exercises.find((exercise) => exercise.id === id);
 }
 
-export function saveFood(exercise: ExerciseFormData) {
+export function saveExercise(exercise: ExerciseFormData) {
   const exerciseInDb =
     exercises.find((e) => e.id === exercise.id) || ({} as Exercise);
 
@@ -44,8 +44,8 @@ export function saveFood(exercise: ExerciseFormData) {
   return exerciseInDb;
 }
 
-export function deleteFood(id: string) {
-  const exerciseInDb = exercises.find((food) => food.id === id);
+export function deleteExercise(id: string) {
+  const exerciseInDb = exercises.find((exercise) => exercise.id === id);
 
   if (exerciseInDb) exercises.splice(exercises.indexOf(exerciseInDb), 1);
 

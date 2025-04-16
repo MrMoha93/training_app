@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { saveExercise } from "../services/fakeExerciseService";
+import { Exercise, saveExercise } from "../services/fakeExerciseService";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,7 +11,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 interface Props {
-  onSave(): void;
+  onSave(exercise: Exercise): void;
 }
 
 export default function ExerciseModal({ onSave }: Props) {
@@ -21,8 +21,8 @@ export default function ExerciseModal({ onSave }: Props) {
   });
 
   function onSubmit(data: FormData) {
-    saveExercise(data);
-    onSave();
+    const exercise = saveExercise(data);
+    onSave(exercise);
     modalRef.current?.close();
     reset();
   }

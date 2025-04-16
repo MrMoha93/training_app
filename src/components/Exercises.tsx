@@ -12,9 +12,9 @@ export default function Exercises({ exercises }: Props) {
         <Link
           to={`/exercises/${exercise.id}`}
           key={exercise.id}
-          className=" grid place-items-center w-66 h-14 bg-primary text-sm font-semibold rounded-box hover:scale-110 cursor-pointer transition-transform ease-in-out duration-200"
+          className=" relative grid place-items-center w-66 h-14 bg-primary bg-opacity-100 text-sm font-semibold rounded-box cursor-pointer hover:bg-opacity-80"
         >
-          {exercise.name}
+          {exercise.name} <i className="absolute top-2 right-2 fas fa-pen" />
         </Link>
       ))}
     </div>

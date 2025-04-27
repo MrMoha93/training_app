@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { saveSet } from "../services/fakeExerciseService";
+import { saveSet } from "../services/ExerciseService";
 import { useParams } from "react-router-dom";
 
 const schema = z.object({
@@ -23,10 +23,10 @@ export default function SetModal({ onSave }: Props) {
     resolver: zodResolver(schema),
   });
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
     if (!id) return;
+    await saveSet(id, data);
     onSave();
-    saveSet(id, data);
     modalRef.current?.close();
     reset();
   }

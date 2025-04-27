@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Exercise, getExercises } from "../services/fakeExerciseService";
+import { Exercise, getExercises } from "../services/ExerciseService";
 import ExerciseModal from "../components/ExerciseModal";
 import Exercises from "../components/Exercises";
 
@@ -7,8 +7,12 @@ export default function ExercisesPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
   useEffect(() => {
-    const exercises = [...getExercises()];
-    setExercises(exercises);
+    async function fetchExercises() {
+      const { data: exercises } = await getExercises();
+      console.log("hämtade exercises", exercises);
+      setExercises(exercises);
+    }
+    fetchExercises();
   }, []);
 
   function handleSave(exercise: Exercise) {

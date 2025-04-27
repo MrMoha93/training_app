@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Exercise, getExercise } from "../services/fakeExerciseService";
+import { Exercise, getExercise } from "../services/ExerciseService";
 import SetModal from "../components/SetModal";
 
 export default function ExercisePage() {
@@ -8,21 +8,25 @@ export default function ExercisePage() {
   const navigate = useNavigate();
   const [exercise, setExercise] = useState<Exercise>();
 
-  // @ts-ignore
   useEffect(() => {
-    if (!id) return;
+    async function fetchExercise() {
+      if (!id) return;
 
-    const exercise = getExercise(id);
+      const { data } = await getExercise(id);
 
-    if (!exercise) return navigate("/not-found");
+      if (!data) return navigate("/not-found");
 
-    setExercise(exercise);
+      setExercise(data);
+    }
+    fetchExercise();
   }, []);
 
-  function handleSave() {
-    const exercise = getExercise(id!);
-    if (!exercise) throw new Error("Exercise was not found");
-    setExercise({ ...exercise });
+  async function handleSave() {
+    if (!id) return;
+
+    const { data } = await getExercise(id);
+
+    setExercise(data);
   }
 
   if (!exercise) return <h1>Loading exercise...</h1>;

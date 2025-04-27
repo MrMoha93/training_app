@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Exercise } from "../services/fakeExerciseService";
+import { Exercise } from "../services/ExerciseService";
 
 interface Props {
   exercises: Exercise[];

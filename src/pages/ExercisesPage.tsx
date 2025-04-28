@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { Exercise, getExercises } from "../services/ExerciseService";
+import {
+  Exercise,
+  getExercise,
+  getExercises,
+} from "../services/ExerciseService";
 import ExerciseModal from "../components/ExerciseModal";
-import Exercises from "../components/Exercises";
+import ExerciseCard from "../components/ExerciseCard";
 
 export default function ExercisesPage() {
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
+    null
+  );
   const modalRef = useRef<HTMLDialogElement>(null);
+  const resetRef = useRef<(() => void) | null>(null);
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
   useEffect(() => {
@@ -16,18 +24,20 @@ export default function ExercisesPage() {
     fetchExercises();
   }, []);
 
-  function handleSave(exercise: Exercise) {
+  async function handleSave(exercise: Exercise) {
+    const { data: updatedExercise } = await getExercise(exercise.id);
+
     const existingExercise = exercises.find((e) => e.id === exercise.id);
 
     if (existingExercise) {
       const updatedExercises = exercises.map((e) => {
-        if (e.id === exercise.id) return exercise;
+        if (e.id === exercise.id) return updatedExercise;
         return e;
       });
 
       setExercises(updatedExercises);
     } else {
-      setExercises([...exercises, exercise]);
+      setExercises([...exercises, updatedExercise]);
     }
   }
 
@@ -39,15 +49,28 @@ export default function ExercisesPage() {
       <div className="flex justify-center">
         <button
           className="btn btn-primary mb-5"
-          onClick={() => modalRef.current?.showModal()}
+          onClick={() => {
+            setSelectedExercise(null);
+            resetRef.current?.();
+            modalRef.current?.showModal();
+          }}
         >
           New Exercise
         </button>
       </div>
       <div className="flex justify-center">
-        <ExerciseModal onSave={handleSave} modalRef={modalRef} />
+        <ExerciseModal
+          onSave={handleSave}
+          modalRef={modalRef}
+          selectedExercise={selectedExercise}
+          onReset={(resetFn) => (resetRef.current = resetFn)}
+        />
       </div>
-      <Exercises exercises={exercises} modalRef={modalRef} />
+      <ExerciseCard
+        exercises={exercises}
+        modalRef={modalRef}
+        onSelect={setSelectedExercise}
+      />
     </>
   );
 }

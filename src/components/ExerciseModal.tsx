@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise, saveExercise } from "../services/ExerciseService";
+import { useEffect } from "react";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -17,11 +18,18 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 interface Props {
-  onSave(exercise: Exercise): void;
   modalRef: React.RefObject<HTMLDialogElement>;
+  selectedExercise: Exercise | null;
+  onSave(exercise: Exercise): void;
+  onReset: (resetFn: () => void) => void;
 }
 
-export default function ExerciseModal({ onSave, modalRef }: Props) {
+export default function ExerciseModal({
+  onSave,
+  modalRef,
+  selectedExercise,
+  onReset,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -31,8 +39,13 @@ export default function ExerciseModal({ onSave, modalRef }: Props) {
     resolver: zodResolver(schema),
   });
 
+  useEffect(() => {
+    onReset(reset);
+  }, [onReset, reset]);
+
   async function onSubmit(data: FormData) {
-    const payload = {
+    const exerciseData = {
+      id: selectedExercise?.id,
       name: data.name,
       date: data.date,
       sets: [
@@ -43,11 +56,32 @@ export default function ExerciseModal({ onSave, modalRef }: Props) {
       ],
     };
 
-    const { data: exercise } = await saveExercise(payload);
+    const { data: exercise } = await saveExercise(exerciseData);
     onSave(exercise);
     modalRef.current?.close();
     reset();
   }
+
+  useEffect(() => {
+    if (!selectedExercise) {
+      reset({
+        name: "",
+        date: "",
+        weight: undefined as any,
+        reps: undefined as any,
+      });
+      return;
+    }
+
+    const lastSet = selectedExercise.sets[selectedExercise.sets.length - 1];
+
+    reset({
+      name: selectedExercise.name,
+      date: selectedExercise.date.split("T")[0],
+      weight: lastSet?.weight ?? 0,
+      reps: lastSet?.reps ?? 0,
+    });
+  }, [selectedExercise, reset]);
 
   return (
     <>

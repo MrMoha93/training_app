@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Exercise, getExercise } from "../services/ExerciseService";
-import SetModal from "../components/SetModal";
 
 export default function ExercisePage() {
   const { id } = useParams();
@@ -48,7 +47,6 @@ export default function ExercisePage() {
           </li>
         ))}
       </ul>
-      <SetModal onSave={handleSave} />
     </>
   );
 }

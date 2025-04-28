@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface ExirciseSet {
+interface ExerciseSet {
   weight: number;
   reps: number;
 }
@@ -18,12 +18,8 @@ interface ExerciseFormData {
 export interface Exercise {
   id: string;
   name: string;
-  sets: ExirciseSet[];
-}
-
-interface SetFormData {
-  weight: number;
-  reps: number;
+  date: string;
+  sets: ExerciseSet[];
 }
 
 export function getExercises() {
@@ -42,13 +38,6 @@ export function saveExercise(exercise: ExerciseFormData) {
     );
 
   return axios.post<Exercise>(`http://localhost:6688/api/exercises`, exercise);
-}
-
-export function saveSet(id: string, setData: SetFormData) {
-  return axios.post<SetFormData>(
-    `http://localhost:6688/api/exercises/${id}/sets`,
-    setData
-  );
 }
 
 export function deleteExercise(id: string) {

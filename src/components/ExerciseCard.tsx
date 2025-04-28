@@ -7,17 +7,17 @@ interface Props {
 }
 
 export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
+  function handleSelectExercise(exercise: Exercise) {
+    onSelect(exercise);
+    modalRef.current?.showModal();
+  }
   return (
     <div className="container mx-auto p-5 grid place-items-center gap-5">
       {exercises.map((exercise) => (
         <div
           key={exercise.id}
           className="relative card bg-base-100 image-full w-96 shadow-sm cursor-pointer"
-          onClick={() => {
-            console.log("exercise", exercise);
-            onSelect(exercise);
-            modalRef.current?.showModal();
-          }}
+          onClick={() => handleSelectExercise(exercise)}
         >
           <figure>
             <img

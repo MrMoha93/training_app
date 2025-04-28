@@ -41,6 +41,12 @@ export default function ExercisesPage() {
     }
   }
 
+  function handleNewExerciseClick() {
+    setSelectedExercise(null);
+    resetRef.current?.();
+    modalRef.current?.showModal();
+  }
+
   return (
     <>
       <h1 className="text-2xl font-semibold text-center py-10">
@@ -49,11 +55,7 @@ export default function ExercisesPage() {
       <div className="flex justify-center">
         <button
           className="btn btn-primary mb-5"
-          onClick={() => {
-            setSelectedExercise(null);
-            resetRef.current?.();
-            modalRef.current?.showModal();
-          }}
+          onClick={handleNewExerciseClick}
         >
           New Exercise
         </button>

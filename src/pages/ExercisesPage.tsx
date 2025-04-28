@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Exercise, getExercises } from "../services/ExerciseService";
 import ExerciseModal from "../components/ExerciseModal";
 import Exercises from "../components/Exercises";
 
 export default function ExercisesPage() {
+  const modalRef = useRef<HTMLDialogElement>(null);
   const [exercises, setExercises] = useState<Exercise[]>([]);
 
   useEffect(() => {
@@ -36,9 +37,17 @@ export default function ExercisesPage() {
         Choose or Create Exercise
       </h1>
       <div className="flex justify-center">
-        <ExerciseModal onSave={handleSave} />
+        <button
+          className="btn btn-primary mb-5"
+          onClick={() => modalRef.current?.showModal()}
+        >
+          New Exercise
+        </button>
       </div>
-      <Exercises exercises={exercises} />
+      <div className="flex justify-center">
+        <ExerciseModal onSave={handleSave} modalRef={modalRef} />
+      </div>
+      <Exercises exercises={exercises} modalRef={modalRef} />
     </>
   );
 }

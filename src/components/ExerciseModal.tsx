@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,10 +18,10 @@ type FormData = z.infer<typeof schema>;
 
 interface Props {
   onSave(exercise: Exercise): void;
+  modalRef: React.RefObject<HTMLDialogElement>;
 }
 
-export default function ExerciseModal({ onSave }: Props) {
-  const modalRef = useRef<HTMLDialogElement>(null);
+export default function ExerciseModal({ onSave, modalRef }: Props) {
   const {
     register,
     handleSubmit,
@@ -52,15 +51,6 @@ export default function ExerciseModal({ onSave }: Props) {
 
   return (
     <>
-      <button
-        onClick={() => {
-          reset();
-          modalRef.current?.showModal();
-        }}
-        className="btn btn-primary ml-2"
-      >
-        New Exercise
-      </button>
       <dialog id="modal" className="modal" ref={modalRef}>
         <form
           onSubmit={handleSubmit(onSubmit)}

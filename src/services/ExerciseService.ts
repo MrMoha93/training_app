@@ -8,6 +8,11 @@ interface ExirciseSet {
 interface ExerciseFormData {
   id?: string;
   name: string;
+  date: string;
+  sets: {
+    weight: number;
+    reps: number;
+  }[];
 }
 
 export interface Exercise {

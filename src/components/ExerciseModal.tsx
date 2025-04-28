@@ -5,7 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise, saveExercise } from "../services/ExerciseService";
 
 const schema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, { message: "Name is required" }),
+  date: z.string().min(1, { message: "Date is required" }),
+  weight: z.coerce
+    .number({ invalid_type_error: "Weight must be a number" })
+    .gte(1, { message: "Weight must be at least 1" }),
+  reps: z.coerce
+    .number({ invalid_type_error: "Reps must be a number" })
+    .gte(1, { message: "Reps must be at least 1" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -16,12 +23,28 @@ interface Props {
 
 export default function ExerciseModal({ onSave }: Props) {
   const modalRef = useRef<HTMLDialogElement>(null);
-  const { register, handleSubmit, reset } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
   async function onSubmit(data: FormData) {
-    const { data: exercise } = await saveExercise(data);
+    const payload = {
+      name: data.name,
+      date: data.date,
+      sets: [
+        {
+          weight: data.weight,
+          reps: data.reps,
+        },
+      ],
+    };
+
+    const { data: exercise } = await saveExercise(payload);
     onSave(exercise);
     modalRef.current?.close();
     reset();
@@ -30,8 +53,11 @@ export default function ExerciseModal({ onSave }: Props) {
   return (
     <>
       <button
-        onClick={() => modalRef.current?.showModal()}
-        className="btn btn-primary ml-2 "
+        onClick={() => {
+          reset();
+          modalRef.current?.showModal();
+        }}
+        className="btn btn-primary ml-2"
       >
         New Exercise
       </button>
@@ -40,14 +66,34 @@ export default function ExerciseModal({ onSave }: Props) {
           onSubmit={handleSubmit(onSubmit)}
           className="modal-box place-items-center"
         >
-          <h1 className="font-bold ">New Exercise</h1>
+          <h1 className="font-bold">New Exercise</h1>
           <input
             {...register("name")}
-            placeholder="Name of exercise..."
-            className="block input my-4"
+            placeholder="Name of exercise"
+            className="block input mt-4"
           />
-
-          <button className="btn btn-secondary ">Save</button>
+          {errors.name && <p className="text-error">{errors.name.message}</p>}
+          <input
+            {...register("weight")}
+            placeholder="Weight"
+            className="block input mt-4"
+          />
+          {errors.weight && (
+            <p className="text-error">{errors.weight.message}</p>
+          )}
+          <input
+            {...register("reps")}
+            placeholder="Reps"
+            className="block input mt-4"
+          />
+          {errors.reps && <p className="text-error">{errors.reps.message}</p>}
+          <input
+            type="date"
+            {...register("date")}
+            className="block input mt-4"
+          />
+          {errors.date && <p className="text-error">{errors.date.message}</p>}
+          <button className="btn btn-secondary mt-2">Save</button>
         </form>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

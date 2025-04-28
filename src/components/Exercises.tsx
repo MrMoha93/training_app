@@ -12,9 +12,18 @@ export default function Exercises({ exercises }: Props) {
         <Link
           to={`/exercises/${exercise.id}`}
           key={exercise.id}
-          className=" relative grid place-items-center w-66 h-14 bg-primary bg-opacity-100 text-sm font-semibold rounded-box cursor-pointer hover:bg-opacity-80"
+          className="relative card bg-base-100 image-full w-96 shadow-sm cursor-pointer"
         >
-          {exercise.name} <i className="absolute top-2 right-2 fas fa-pen" />
+          <figure>
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              alt={exercise.name}
+            />
+          </figure>
+          <div className="card-body">
+            <h2 className="card-title">{exercise.name}</h2>
+            <i className="absolute top-2 right-2 fas fa-pen" />
+          </div>
         </Link>
       ))}
     </div>

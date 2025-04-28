@@ -32,7 +32,9 @@ export default function ExercisesPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-center py-10">Training App</h1>
+      <h1 className="text-2xl font-semibold text-center py-10">
+        Choose or Create Exercise
+      </h1>
       <div className="flex justify-center">
         <ExerciseModal onSave={handleSave} />
       </div>

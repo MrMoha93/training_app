@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Exercise, getExercise } from "../services/ExerciseService";
+import {
+  deleteExercise,
+  Exercise,
+  getExercise,
+} from "../services/ExerciseService";
 
 export default function ExercisePage() {
   const { id } = useParams();
@@ -20,25 +24,42 @@ export default function ExercisePage() {
     fetchExercise();
   }, []);
 
+  async function handleDelete() {
+    if (!id) return;
+    await deleteExercise(id);
+    navigate("/exercises");
+  }
+
   if (!exercise) return <h1>Loading exercise...</h1>;
 
   return (
-    <>
-      <h1 className="text-3xl font-bold m-5 text-center">{exercise.name}</h1>
-      <ul className="ml-5">
-        {exercise.sets.map((set, index) => (
-          <li key={index} className="text-xl">
-            <div className="flex w-full flex-col">
-              <div className="card bg-base-300 rounded-box grid h-20 place-items-center">
+    <div className="flex justify-center mt-10">
+      <div className="card w-full max-w-md bg-base-200 shadow-xl p-6">
+        <h1 className="text-3xl font-bold text-center mb-4">{exercise.name}</h1>
+        <p className="text-center text-sm text-gray-500 mb-4">
+          Date: {exercise.date.split("T")[0]}
+        </p>
+        <ul>
+          {exercise.sets.map((set, index) => (
+            <li key={index} className="mb-2">
+              <div className="bg-base-300 rounded-box p-3 text-lg">
+                <div>
+                  <h1>Sets:</h1>
+                </div>
                 Weight: {set.weight} - Repetition: {set.reps}
               </div>
               {index !== exercise.sets.length - 1 && (
-                <div className="divider"></div>
+                <div className="divider my-2"></div>
               )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </>
+            </li>
+          ))}
+        </ul>
+        <div className="flex justify-end-safe mt-4">
+          <button onClick={handleDelete} className="btn btn-error">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

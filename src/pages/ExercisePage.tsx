@@ -4,12 +4,15 @@ import {
   deleteExercise,
   Exercise,
   getExercise,
+  getExercises,
 } from "../services/ExerciseService";
 
 export default function ExercisePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [exercise, setExercise] = useState<Exercise>();
+  const [exerciseCount, setExerciseCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     async function fetchExercise() {
@@ -20,12 +23,19 @@ export default function ExercisePage() {
       if (!data) return navigate("/not-found");
 
       setExercise(data);
+
+      const allExercises = await getExercises();
+      setExerciseCount(allExercises.data.length);
     }
     fetchExercise();
   }, []);
 
   async function handleDelete() {
     if (!id) return;
+    if (exerciseCount <= 1) {
+      setErrorMessage("You cannot delete the last exercise.");
+      return;
+    }
     await deleteExercise(id);
     navigate("/exercises");
   }
@@ -54,6 +64,9 @@ export default function ExercisePage() {
             </li>
           ))}
         </ul>
+        <div className="flex justify-start mt-4 text-error">
+          {errorMessage && errorMessage}
+        </div>
         <div className="flex justify-end-safe mt-4">
           <button onClick={handleDelete} className="btn btn-error">
             Delete

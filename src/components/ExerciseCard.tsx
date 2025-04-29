@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Exercise } from "../services/ExerciseService";
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
+  const navigate = useNavigate();
+
   function handleSelectExercise(exercise: Exercise) {
     onSelect(exercise);
     modalRef.current?.showModal();
@@ -15,9 +18,8 @@ export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
     <div className="container mx-auto p-5 grid place-items-center gap-5">
       {exercises.map((exercise) => (
         <div
-          key={exercise.id}
           className="relative card bg-base-100 image-full w-96 shadow-sm cursor-pointer"
-          onClick={() => handleSelectExercise(exercise)}
+          onClick={() => navigate(`/exercises/${exercise.id}`)}
         >
           <figure>
             <img
@@ -27,7 +29,13 @@ export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
           </figure>
           <div className="card-body">
             <h2 className="card-title">{exercise.name}</h2>
-            <i className="absolute top-2 right-2 fas fa-pen" />
+            <i
+              className="absolute top-2 right-2 fas fa-pen cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSelectExercise(exercise);
+              }}
+            />
           </div>
         </div>
       ))}

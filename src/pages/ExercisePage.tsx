@@ -20,14 +20,6 @@ export default function ExercisePage() {
     fetchExercise();
   }, []);
 
-  async function handleSave() {
-    if (!id) return;
-
-    const { data } = await getExercise(id);
-
-    setExercise(data);
-  }
-
   if (!exercise) return <h1>Loading exercise...</h1>;
 
   return (

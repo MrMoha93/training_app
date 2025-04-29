@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise, saveExercise } from "../services/ExerciseService";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -30,10 +31,14 @@ export default function ExerciseModal({
   selectedExercise,
   onReset,
 }: Props) {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
+    trigger,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -43,7 +48,7 @@ export default function ExerciseModal({
     onReset(reset);
   }, [onReset, reset]);
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData, goToExercise = false) {
     const exerciseData = {
       id: selectedExercise?.id,
       name: data.name,
@@ -60,6 +65,20 @@ export default function ExerciseModal({
     onSave(exercise);
     modalRef.current?.close();
     reset();
+
+    if (goToExercise) navigate(`/exercises/${exercise.id}`);
+  }
+
+  async function handleSaveAndOpen(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    const isValid = await trigger();
+    if (!isValid) return;
+
+    const values = getValues();
+    values.weight = Number(values.weight);
+    values.reps = Number(values.reps);
+
+    await onSubmit(values, true);
   }
 
   useEffect(() => {
@@ -87,7 +106,7 @@ export default function ExerciseModal({
     <>
       <dialog id="modal" className="modal" ref={modalRef}>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => onSubmit(data))}
           className="modal-box place-items-center"
         >
           <h1 className="font-bold">New Exercise</h1>
@@ -118,6 +137,13 @@ export default function ExerciseModal({
           />
           {errors.date && <p className="text-error">{errors.date.message}</p>}
           <button className="btn btn-secondary mt-2">Save</button>
+          <button
+            type="button"
+            className="btn btn-secondary mt-2 ml-2"
+            onClick={handleSaveAndOpen}
+          >
+            Save & Open
+          </button>
         </form>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

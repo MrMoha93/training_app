@@ -47,7 +47,7 @@ export default function ExercisePage() {
       <div className="card w-full max-w-md bg-base-200 shadow-xl p-6">
         <h1 className="text-3xl font-bold text-center mb-4">{exercise.name}</h1>
         <p className="text-center text-sm text-gray-500 mb-4">
-          Date: {exercise.date.split("T")[0]}
+          Date for exercise: {exercise.date.split("T")[0]}
         </p>
         <ul>
           {exercise.sets.map((set, index) => (

@@ -49,9 +49,13 @@ export default function ExercisesPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-center py-10">
-        Choose or Create Exercise
+      <h1 className="text-2xl font-semibold text-center py-5">
+        Create, choose or edit an exercise
       </h1>
+      <p className="text-center mt-2">
+        Showing {exercises.length} exercises in the database
+      </p>
+      ;
       <div className="flex justify-center">
         <button
           className="btn btn-primary mb-5"

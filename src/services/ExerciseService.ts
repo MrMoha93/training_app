@@ -9,6 +9,7 @@ interface ExerciseFormData {
   id?: string;
   name: string;
   date: string;
+  imageUrl?: string;
   sets: {
     weight: number;
     reps: number;
@@ -19,6 +20,7 @@ export interface Exercise {
   id: string;
   name: string;
   date: string;
+  imageUrl?: string;
   sets: ExerciseSet[];
 }
 

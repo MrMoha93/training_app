@@ -24,9 +24,9 @@ export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
         >
           <figure>
             <img
-              src="/images/exercise.png"
+              src={exercise.imageUrl ?? "/images/exercise.png"}
               alt="Product image"
-              style={{ width: 100, height: 150 }}
+              className="w-[100px] h-[100px] object-cover rounded"
             />
           </figure>
           <div className="card-body">

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Exercise } from "../types";
 import {
   deleteExercise,
-  Exercise,
   getExercise,
   getExercises,
-} from "../services/ExerciseService";
+} from "../services/exerciseService";
 
 export default function ExercisePage() {
   const { id } = useParams();

@@ -1,28 +1,5 @@
 import axios from "axios";
-
-interface ExerciseSet {
-  weight: number;
-  reps: number;
-}
-
-interface ExerciseFormData {
-  id?: string;
-  name: string;
-  date: string;
-  imageUrl?: string;
-  sets: {
-    weight: number;
-    reps: number;
-  }[];
-}
-
-export interface Exercise {
-  id: string;
-  name: string;
-  date: string;
-  imageUrl?: string;
-  sets: ExerciseSet[];
-}
+import { Exercise, ExerciseFormData } from "../types";
 
 export function getExercises() {
   return axios.get<Exercise[]>("http://localhost:6688/api/exercises");

@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Exercise,
-  getExercise,
-  getExercises,
-} from "../services/ExerciseService";
+import { getExercise, getExercises } from "../services/exerciseService";
+import { Exercise } from "../types";
 import ExerciseModal from "../components/ExerciseModal";
 import ExerciseCard from "../components/ExerciseCard";
 

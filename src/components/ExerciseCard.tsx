@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Exercise } from "../services/ExerciseService";
+import { Exercise } from "../types";
 
 interface Props {
   exercises: Exercise[];
@@ -15,32 +15,35 @@ export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
     modalRef.current?.showModal();
   }
   return (
-    <div className="container mx-auto p-5 grid place-items-center gap-5">
+    <div className="flex flex-wrap justify-center gap-5 p-5">
       {exercises.map((exercise) => (
         <div
           key={exercise.id}
-          className="relative card bg-base-100 image-full w-96 shadow-sm cursor-pointer"
+          className="card w-[400px] h-[180px] shadow-md cursor-pointer relative overflow-hidden transition-transform duration-300 hover:scale-103 "
           onClick={() => navigate(`/exercises/${exercise.id}`)}
         >
-          <figure>
-            <img
-              src={exercise.imageUrl ?? "/images/exercise.png"}
-              alt="Product image"
-              className="w-[100px] h-[100px] object-cover rounded"
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title text-primary">{exercise.name}</h2>
-            <i
-              className="absolute top-2 right-2 fas fa-pen cursor-pointer text-secondary"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSelectExercise(exercise);
-              }}
-            />
-            <h2 className="card-title text-secondary">
-              {exercise.date.split("T")[0]}
-            </h2>
+          <div
+            className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${
+                exercise.imageUrl ?? "/images/exercisepeople.png"
+              })`,
+            }}
+          />
+
+          <div className="relative z-10 px-3 py-2 h-full flex flex-col justify-between">
+            <div>
+              <h2 className="text-lg text-primary">{exercise.name}</h2>
+            </div>
+            <div className="absolute top-2 right-2 transition-transform duration-200 hover:scale-120">
+              <i
+                className="fas fa-pen text-amber-900 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelectExercise(exercise);
+                }}
+              />
+            </div>
           </div>
         </div>
       ))}

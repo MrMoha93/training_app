@@ -1,42 +1,11 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Exercise, saveExercise } from "../services/ExerciseService";
+import { saveExercise } from "../services/exerciseService";
+import { Exercise } from "../types";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { exerciseSchema, FormData } from "../schemas/exerciseSchema";
 import cloudinaryService from "../services/cloudinaryService";
-
-const schema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  date: z.string().min(1, { message: "Date is required" }),
-  weight: z.coerce
-    .number({ invalid_type_error: "Weight must be a number" })
-    .gte(1, { message: "Weight must be at least 1" }),
-  reps: z.coerce
-    .number({ invalid_type_error: "Reps must be a number" })
-    .gte(1, { message: "Reps must be at least 1" }),
-  images: z
-    .instanceof(FileList)
-    .refine(
-      (fileList) => {
-        if (!fileList || fileList.length === 0) return true;
-        return ["image/png", "image/jpg"].includes(fileList[0].type);
-      },
-      { message: "Only PNG/JPG images are allowed" }
-    )
-    .refine(
-      (fileList) => {
-        if (!fileList || fileList.length === 0) return true;
-        return fileList[0].size <= 5_000_000;
-      },
-      {
-        message: "Maximum file size allowed is 5 MB",
-      }
-    )
-    .optional(),
-});
-
-type FormData = z.infer<typeof schema>;
 
 interface Props {
   modalRef: React.RefObject<HTMLDialogElement>;
@@ -61,7 +30,7 @@ export default function ExerciseModal({
     trigger,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(exerciseSchema),
   });
 
   useEffect(() => {
@@ -144,6 +113,8 @@ export default function ExerciseModal({
           />
           {errors.name && <p className="text-error">{errors.name.message}</p>}
           <input
+            type="number"
+            step="any"
             {...register("weight")}
             placeholder="Weight"
             className="block input mt-4"
@@ -184,6 +155,9 @@ export default function ExerciseModal({
               className="file-input file-input-bordered"
             />
           </div>
+          {errors.images && (
+            <p className="text-error mt-2">{errors.images.message}</p>
+          )}
           <button className="btn btn-secondary mt-4">Save</button>
           <button
             type="button"

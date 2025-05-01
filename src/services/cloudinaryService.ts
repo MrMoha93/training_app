@@ -11,7 +11,6 @@ async function saveImage(file: File) {
   const response = await axios.post(cloudinaryURL, formData, {
     headers: { "x-auth-token": undefined },
   });
-  console.log(response);
   return response.data.secure_url;
 }
 

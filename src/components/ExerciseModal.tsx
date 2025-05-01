@@ -158,14 +158,28 @@ export default function ExerciseModal({
           {errors.images && (
             <p className="text-error mt-2">{errors.images.message}</p>
           )}
-          <button className="btn btn-secondary mt-4">Save</button>
-          <button
-            type="button"
-            className="btn btn-secondary mt-4 ml-2"
-            onClick={handleSaveAndOpen}
-          >
-            Save & Open
-          </button>
+          {selectedExercise ? (
+            <button
+              type="button"
+              className="btn btn-info mt-4"
+              onClick={handleSaveAndOpen}
+            >
+              Confirm
+            </button>
+          ) : (
+            <>
+              <button type="submit" className="btn btn-secondary mt-4">
+                Save
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary mt-4 ml-2"
+                onClick={handleSaveAndOpen}
+              >
+                Save & Open
+              </button>
+            </>
+          )}
         </form>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

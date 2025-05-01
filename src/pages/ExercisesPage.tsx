@@ -63,7 +63,7 @@ export default function ExercisesPage() {
       <p className="text-center mt-2">
         Showing {exercises.length} exercises in the database
       </p>
-      ;
+
       <div className="flex justify-center">
         <button
           className="btn btn-primary mb-5"

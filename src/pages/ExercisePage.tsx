@@ -51,25 +51,28 @@ export default function ExercisePage() {
         </p>
         <ul>
           {exercise.sets.map((set, index) => (
-            <li key={index} className="mb-2">
-              <div className="bg-base-300 rounded-box p-3 text-lg">
-                <div>
-                  <h1>Sets:</h1>
-                </div>
-                Weight: {set.weight} - Repetition: {set.reps}
+            <li
+              key={index}
+              className="p-2 border border-gray-300 rounded-lg mb-2 shadow-sm bg-base-100"
+            >
+              <div className="flex justify-between text-sm">
+                <span>
+                  <span className="font-medium">Weight:</span>
+                  {` ${set.weight} kg`}
+                </span>
+                <span>
+                  <span className="font-medium">Reps:</span> {set.reps}
+                </span>
               </div>
-              {index !== exercise.sets.length - 1 && (
-                <div className="divider my-2"></div>
-              )}
             </li>
           ))}
         </ul>
         <div className="flex justify-start mt-4 text-error">
           {errorMessage && errorMessage}
         </div>
-        <div className="flex justify-end-safe mt-4">
+        <div className="flex justify-center mt-4">
           <button onClick={handleDelete} className="btn btn-error">
-            Delete
+            Delete Exercise
           </button>
         </div>
       </div>

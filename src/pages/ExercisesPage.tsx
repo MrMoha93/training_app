@@ -81,7 +81,7 @@ export default function ExercisesPage() {
       />
       <div className="mt-6 flex justify-center">
         <Pagination
-          totalCount={exercises.length}
+          totalCount={filtered.length}
           pageSize={PAGE_SIZE}
           selectedPage={currentPage}
           onPageSelect={setCurrentPage}

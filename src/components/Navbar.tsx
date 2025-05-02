@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useExercises } from "../context/ExerciseContext";
 
 export default function Navbar() {
-  const { exercises, searchQuery, setSearchQuery } = useExercises();
+  const location = useLocation();
+  const { exercises, exerciseInfos, searchQuery, setSearchQuery } =
+    useExercises();
 
-  const filtered = searchQuery
-    ? exercises.filter((e) =>
+  const isInfoPage =
+    location.pathname.startsWith("/exercisesinfo") ||
+    location.pathname.startsWith("/exerciseinfo");
+
+  const count = isInfoPage
+    ? exerciseInfos.filter((e) =>
         e.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : exercises;
+      ).length
+    : exercises.filter((e) =>
+        e.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ).length;
 
   return (
     <div className="navbar bg-base-200 shadow-sm px-4 py-2">
@@ -26,8 +34,8 @@ export default function Navbar() {
         >
           Exercises Information
         </Link>
-        <p className="text-sm text-gray-600 whitespace-nowrap">
-          Showing {filtered.length} exercises in the database
+        <p className="text-sm text-secondary">
+          Showing {count} exercises in the database
         </p>
       </div>
     </div>

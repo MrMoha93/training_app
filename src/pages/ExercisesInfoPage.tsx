@@ -29,9 +29,6 @@ export default function ExercisesinfoPage() {
             className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 w-full text-lg"
           >
             <div className="font-medium">{exercise.name}</div>
-            {exercise.description && (
-              <div className="text-xs opacity-60">{exercise.description}</div>
-            )}
           </Link>
         </li>
       ))}

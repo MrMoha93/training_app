@@ -3,6 +3,7 @@ import App from "./App";
 import ExercisePage from "./pages/ExercisePage";
 import ExercisesPage from "./pages/ExercisesPage";
 import ExercisesinfoPage from "./pages/ExercisesInfoPage";
+import ExerciseInfoPage from "./pages/ExerciseInfoPage";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
       { path: "exercises", element: <ExercisesPage /> },
       { path: "exercises/:id", element: <ExercisePage /> },
       { path: "exercisesinfo", element: <ExercisesinfoPage /> },
+      { path: "exerciseinfo/:id", element: <ExerciseInfoPage /> },
     ],
   },
 ]);

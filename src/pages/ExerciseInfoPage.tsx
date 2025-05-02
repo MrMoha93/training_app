@@ -2,10 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getExerciseInfo } from "../services/exerciseInfoService";
 import { ExerciseInfo } from "../types";
+import RatingStars from "../components/RatingStars";
+import CommentArea from "../components/CommentArea";
 
 export default function ExerciseInfoPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [rating, setRating] = useState(0);
+  const [comment, setcomment] = useState("");
+
   const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
 
   useEffect(() => {
@@ -32,6 +37,8 @@ export default function ExerciseInfoPage() {
         {exerciseInfo.description && (
           <p className="text-left text-md mb-4">{exerciseInfo.description}</p>
         )}
+        <RatingStars value={rating} onChange={setRating} />
+        <CommentArea value={comment} onChange={setcomment} />
       </div>
     </div>
   );

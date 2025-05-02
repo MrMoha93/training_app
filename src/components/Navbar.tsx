@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useExercises } from "../context/ExerciseContext";
 
 export default function Navbar() {
@@ -19,6 +20,12 @@ export default function Navbar() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="input input-bordered w-40 sm:w-52 md:w-64"
         />
+        <Link
+          to="/exercisesinfo"
+          className="link link-hover text-md text-primary"
+        >
+          Exercises Information
+        </Link>
         <p className="text-sm text-gray-600 whitespace-nowrap">
           Showing {filtered.length} exercises in the database
         </p>

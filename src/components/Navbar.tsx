@@ -22,7 +22,7 @@ export default function Navbar() {
         />
         <Link
           to="/exercisesinfo"
-          className="link link-hover text-md text-primary"
+          className="link link-hover text-sm text-primary"
         >
           Exercises Information
         </Link>

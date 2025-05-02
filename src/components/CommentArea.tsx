@@ -5,7 +5,7 @@ interface Props {
 
 export default function CommentArea({ value, onChange }: Props) {
   return (
-    <fieldset className="fieldset">
+    <fieldset className="fieldset mt-1">
       <textarea
         className="textarea h-24"
         placeholder="Your comment..."

@@ -131,6 +131,7 @@ export default function ExerciseModal({
           <input
             type="date"
             {...register("date")}
+            min={new Date().toISOString().split("T")[0]}
             className="block input mt-4"
           />
           {errors.date && <p className="text-error">{errors.date.message}</p>}

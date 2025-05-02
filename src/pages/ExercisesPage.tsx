@@ -7,7 +7,7 @@ import ExerciseModal from "../components/ExerciseModal";
 import ExerciseCard from "../components/ExerciseCard";
 
 export default function ExercisesPage() {
-  const { exercises, setExercises } = useExercises();
+  const { exercises, searchQuery, setExercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
@@ -44,7 +44,13 @@ export default function ExercisesPage() {
     );
   }
 
-  const sortedExercises = sortByDate(exercises);
+  const filtered = searchQuery
+    ? exercises.filter((e) =>
+        e.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : exercises;
+
+  const sortedExercises = sortByDate(filtered);
   const paginatedExercises = paginate(sortedExercises, PAGE_SIZE, currentPage);
 
   return (

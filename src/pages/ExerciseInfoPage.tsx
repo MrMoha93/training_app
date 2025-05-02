@@ -1,30 +1,53 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getExerciseInfo } from "../services/exerciseInfoService";
-import { ExerciseInfo } from "../types";
+import { getReviews, postReview } from "../services/reviewService";
+import { ExerciseInfo, Review } from "../types";
 import RatingStars from "../components/RatingStars";
 import CommentArea from "../components/CommentArea";
+import ReviewList from "../components/ReviewList";
 
 export default function ExerciseInfoPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [rating, setRating] = useState(0);
-  const [comment, setcomment] = useState("");
 
   const [exerciseInfo, setExerciseInfo] = useState<ExerciseInfo>();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchExerciseInfo() {
+    async function fetchData() {
       if (!id) return;
-
       const { data } = await getExerciseInfo(id);
-
       if (!data) return navigate("/not-found");
-
       setExerciseInfo(data);
+
+      const reviewsRes = await getReviews(id);
+      setReviews(reviewsRes.data);
     }
-    fetchExerciseInfo();
+
+    fetchData();
   }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!id) return;
+
+    if (rating < 1) {
+      setError("Please select a rating before submitting.");
+      return;
+    }
+    setError("");
+
+    await postReview(id, { rating, comment });
+    setRating(0);
+    setComment("");
+
+    const updated = await getReviews(id);
+    setReviews(updated.data);
+  }
 
   if (!exerciseInfo) return <h1>Loading...</h1>;
 
@@ -37,8 +60,16 @@ export default function ExerciseInfoPage() {
         {exerciseInfo.description && (
           <p className="text-left text-md mb-4">{exerciseInfo.description}</p>
         )}
-        <RatingStars value={rating} onChange={setRating} />
-        <CommentArea value={comment} onChange={setcomment} />
+
+        <form onSubmit={handleSubmit}>
+          <RatingStars value={rating} onChange={setRating} />
+          <CommentArea value={comment} onChange={setComment} />
+          {error && <div className="text-error text-sm mt-1">{error}</div>}
+          <button type="submit" className="btn btn-primary mt-4">
+            Submit Review
+          </button>
+        </form>
+        <ReviewList reviews={reviews} />
       </div>
     </div>
   );

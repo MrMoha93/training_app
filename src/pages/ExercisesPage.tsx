@@ -1,27 +1,19 @@
-import { useEffect, useRef, useState } from "react";
-import { getExercise, getExercises } from "../services/exerciseService";
+import { useRef, useState } from "react";
+import { getExercise } from "../services/exerciseService";
 import Pagination, { PAGE_SIZE, paginate } from "../components/Pagination";
 import { Exercise } from "../types";
+import { useExercises } from "../context/ExerciseContext";
 import ExerciseModal from "../components/ExerciseModal";
 import ExerciseCard from "../components/ExerciseCard";
 
 export default function ExercisesPage() {
+  const { exercises, setExercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
   const modalRef = useRef<HTMLDialogElement>(null);
   const resetRef = useRef<(() => void) | null>(null);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    async function fetchExercises() {
-      const { data: exercises } = await getExercises();
-      console.log("hämtade exercises", exercises);
-      setExercises(exercises);
-    }
-    fetchExercises();
-  }, []);
 
   async function handleSave(exercise: Exercise) {
     const { data: updatedExercise } = await getExercise(exercise.id);
@@ -56,14 +48,10 @@ export default function ExercisesPage() {
   const paginatedExercises = paginate(sortedExercises, PAGE_SIZE, currentPage);
 
   return (
-    <>
+    <div className="mb-10">
       <h1 className="text-2xl font-semibold text-center py-5">
-        Create, choose or edit an exercise
+        Create or edit an exercise
       </h1>
-      <p className="text-center mt-2">
-        Showing {exercises.length} exercises in the database
-      </p>
-
       <div className="flex justify-center">
         <button
           className="btn btn-primary mb-5"
@@ -85,12 +73,14 @@ export default function ExercisesPage() {
         modalRef={modalRef}
         onSelect={setSelectedExercise}
       />
-      <Pagination
-        totalCount={exercises.length}
-        pageSize={PAGE_SIZE}
-        selectedPage={currentPage}
-        onPageSelect={setCurrentPage}
-      />
-    </>
+      <div className="mt-6 flex justify-center">
+        <Pagination
+          totalCount={exercises.length}
+          pageSize={PAGE_SIZE}
+          selectedPage={currentPage}
+          onPageSelect={setCurrentPage}
+        />
+      </div>
+    </div>
   );
 }

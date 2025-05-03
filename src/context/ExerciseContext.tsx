@@ -4,19 +4,25 @@ import {
   useContext,
   useEffect,
   useState,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { getExercises } from "../services/exerciseService";
 import { Exercise, ExerciseInfo } from "../types";
 import { getExerciseInfos } from "../services/exerciseInfoService";
 
-const ExerciseContext = createContext({
-  exercises: [] as Exercise[],
-  setExercises: (_: Exercise[]) => {},
-  searchQuery: "",
-  setSearchQuery: (_: string) => {},
-  exerciseInfos: [] as ExerciseInfo[],
-  setExerciseInfos: (_: ExerciseInfo[]) => {},
-});
+interface ExerciseContextValue {
+  exercises: Exercise[];
+  setExercises: Dispatch<SetStateAction<Exercise[]>>;
+  exerciseInfos: ExerciseInfo[];
+  setExerciseInfos: Dispatch<SetStateAction<ExerciseInfo[]>>;
+  searchQuery: string;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+}
+
+const ExerciseContext = createContext<ExerciseContextValue | undefined>(
+  undefined
+);
 
 export default function ExerciseProvider({ children }: PropsWithChildren) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -45,5 +51,8 @@ export default function ExerciseProvider({ children }: PropsWithChildren) {
 }
 
 export function useExercises() {
-  return useContext(ExerciseContext);
+  const context = useContext(ExerciseContext);
+  if (!context)
+    throw new Error("useExercises must be used within ExerciseProvider");
+  return context;
 }

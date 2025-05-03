@@ -19,22 +19,22 @@ export default function Navbar() {
       ).length;
 
   return (
-    <div className="navbar bg-base-200 shadow-sm px-4 py-2">
-      <div className="container mx-auto flex flex-wrap items-center justify-between gap-4 px-4">
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="input input-bordered w-40 sm:w-52 md:w-64"
-        />
+    <div className="bg-base-200 shadow-sm px-4 py-2 relative">
+      <div className="max-w-screen-xl mx-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <Link
           to="/exercisesinfo"
-          className="link link-hover text-sm text-primary"
+          className="text-md font-semibold text-center md:absolute md:left-1/2 md:transform md:-translate-x-1/2 transition duration-500 hover:scale-100 hover:text-blue-900"
         >
-          Exercises Information
+          EXERCISES-INFO
         </Link>
-        <p className="text-sm text-secondary">
+        <input
+          type="text"
+          placeholder="Search exercises..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="input input-bordered w-full sm:w-64 md:w-72"
+        />
+        <p className="text-sm text-secondary text-center md:text-right">
           Showing {count} exercises in the database
         </p>
       </div>

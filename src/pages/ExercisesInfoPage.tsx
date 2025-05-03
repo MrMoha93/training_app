@@ -27,7 +27,8 @@ export default function ExercisesinfoPage() {
       <li className="pb-2 tracking-wide text-md">
         This is a list of well known exercises in the fitness world. You can get
         an overview of what each exercise is and how popular it is among users.
-        You can also rate and comment on each exercise.
+        You can also rate and comment on each exercise. This list is not to be
+        confused with the exercise cards.
       </li>
 
       {filteredInfos.map((exercise) => (

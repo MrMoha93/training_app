@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getExercise } from "../services/exerciseService";
 import Pagination, { PAGE_SIZE, paginate } from "../components/Pagination";
 import { Exercise } from "../types";
 import { useExercises } from "../context/ExerciseContext";
 import ExerciseModal from "../components/ExerciseModal";
 import ExerciseCard from "../components/ExerciseCard";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ExercisesPage() {
   const { exercises, searchQuery, setExercises } = useExercises();
@@ -14,6 +16,21 @@ export default function ExercisesPage() {
   const modalRef = useRef<HTMLDialogElement>(null);
   const resetRef = useRef<(() => void) | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state?.deletedId) {
+      setExercises((preview) =>
+        preview.filter((e) => e.id !== location.state.deletedId)
+      );
+
+      navigate(location.pathname, {
+        replace: true,
+        state: null,
+      });
+    }
+  }, [location.state]);
 
   async function handleSave(exercise: Exercise) {
     const { data: updatedExercise } = await getExercise(exercise.id);
@@ -56,7 +73,7 @@ export default function ExercisesPage() {
   return (
     <div className="mb-10">
       <h1 className="text-2xl font-semibold text-center py-5">
-        Create or edit an exercise
+        Create, read, update or delete an exercise
       </h1>
       <div className="flex justify-center">
         <button

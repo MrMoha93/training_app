@@ -38,3 +38,21 @@ export interface ReviewFormData {
   rating: number;
   comment?: string;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  username: string;
+  isAdmin: boolean;
+}
+
+export interface UserRegister {
+  name: string;
+  username: string;
+  password: string;
+}
+
+export interface UserLogin {
+  username: string;
+  password: string;
+}

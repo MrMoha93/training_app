@@ -26,8 +26,6 @@ export default function ExerciseModal({
     register,
     handleSubmit,
     reset,
-    getValues,
-    trigger,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(exerciseSchema),
@@ -37,7 +35,7 @@ export default function ExerciseModal({
     onReset(reset);
   }, [onReset, reset]);
 
-  async function onSubmit(data: FormData, goToExercise = false) {
+  async function onSubmit(data: FormData) {
     let uploadedImageUrl: string | undefined = undefined;
 
     if (data.images && data.images.length > 0) {
@@ -62,19 +60,7 @@ export default function ExerciseModal({
     modalRef.current?.close();
     reset();
 
-    if (goToExercise) navigate(`/exercises/${exercise.id}`);
-  }
-
-  async function handleSaveAndOpen(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    const isValid = await trigger();
-    if (!isValid) return;
-
-    const values = getValues();
-    values.weight = Number(values.weight);
-    values.reps = Number(values.reps);
-
-    await onSubmit(values, true);
+    navigate(`/exercises/${exercise.id}`);
   }
 
   useEffect(() => {
@@ -163,21 +149,14 @@ export default function ExerciseModal({
             <button
               type="button"
               className="btn btn-info mt-4"
-              onClick={handleSaveAndOpen}
+              onClick={handleSubmit((data) => onSubmit(data))}
             >
               Confirm
             </button>
           ) : (
             <>
-              <button type="submit" className="btn btn-secondary mt-4">
+              <button type="submit" className="btn btn-info mt-4">
                 Save
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary mt-4 ml-2"
-                onClick={handleSaveAndOpen}
-              >
-                Save & Open
               </button>
             </>
           )}

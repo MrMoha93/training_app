@@ -32,6 +32,9 @@ export interface Review {
   comment?: string;
   createdAt: string;
   exerciseInfoId: string;
+  user: {
+    name: string;
+  };
 }
 
 export interface ReviewFormData {

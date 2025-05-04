@@ -1,4 +1,5 @@
 import { Review } from "../types";
+import { formatDistanceToNow } from "date-fns";
 import RatingStars from "./RatingStars";
 
 interface Props {
@@ -13,10 +14,15 @@ export default function ReviewList({ reviews }: Props) {
       <h2 className="text-lg font-semibold mb-2">Reviews</h2>
       <ul className="space-y-2">
         {reviews.map((review) => (
-          <li key={review.id} className="border-b border-black pb-2">
+          <li key={review.id} className="border-b pb-2">
             <div className="flex flex-col items-start gap-1">
-              <div className="text-xs text-primary">
-                {new Date(review.createdAt).toLocaleDateString()}
+              <div className="text-neutral text-xs font-semibold">
+                {review.user?.name}
+              </div>
+              <div className="text-xs text-success">
+                {formatDistanceToNow(new Date(review.createdAt), {
+                  addSuffix: true,
+                })}
               </div>
               <RatingStars value={review.rating} name={`review-${review.id}`} />
               {review.comment && (

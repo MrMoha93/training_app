@@ -1,24 +1,50 @@
 import axios from "axios";
 import { Exercise, ExerciseFormData } from "../types";
+import auth from "./authService";
+
+const API_ENDPOINT = "http://localhost:6688/api/exercises";
 
 export function getExercises() {
-  return axios.get<Exercise[]>("http://localhost:6688/api/exercises");
+  const token = auth.getJwt();
+  return axios.get<Exercise[]>(API_ENDPOINT, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
 }
 
 export function getExercise(id: string) {
-  return axios.get<Exercise>(`http://localhost:6688/api/exercises/${id}`);
+  const token = auth.getJwt();
+  return axios.get<Exercise>(`${API_ENDPOINT}/${id}`, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
 }
 
 export function saveExercise(exercise: ExerciseFormData) {
-  if (exercise.id)
-    return axios.put<Exercise>(
-      `http://localhost:6688/api/exercises/${exercise.id}`,
-      exercise
-    );
+  const token = auth.getJwt();
 
-  return axios.post<Exercise>(`http://localhost:6688/api/exercises`, exercise);
+  if (exercise.id) {
+    return axios.put<Exercise>(`${API_ENDPOINT}/${exercise.id}`, exercise, {
+      headers: {
+        "x-auth-token": token,
+      },
+    });
+  }
+
+  return axios.post<Exercise>(API_ENDPOINT, exercise, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
 }
 
 export function deleteExercise(id: string) {
-  return axios.delete<Exercise>(`http://localhost:6688/api/exercises/${id}`);
+  const token = auth.getJwt();
+  return axios.delete<Exercise>(`${API_ENDPOINT}/${id}`, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
 }

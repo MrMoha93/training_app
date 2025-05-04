@@ -21,3 +21,12 @@ export function postReview(exerciseInfoId: string, data: ReviewFormData) {
     },
   });
 }
+
+export function deleteReview(id: string) {
+  const token = auth.getJwt();
+  return axios.delete<Review>(`${API_ENDPOINT}/${id}`, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
+}

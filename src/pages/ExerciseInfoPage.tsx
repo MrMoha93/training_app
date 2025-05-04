@@ -68,7 +68,7 @@ export default function ExerciseInfoPage() {
             Submit
           </button>
         </form>
-        <ReviewList reviews={reviews} />
+        <ReviewList reviews={reviews} setReviews={setReviews} />
       </div>
     </div>
   );

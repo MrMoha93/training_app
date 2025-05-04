@@ -35,6 +35,7 @@ export interface Review {
   user: {
     name: string;
   };
+  userId: string;
 }
 
 export interface ReviewFormData {

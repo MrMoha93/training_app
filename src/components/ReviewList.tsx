@@ -1,13 +1,25 @@
 import { Review } from "../types";
 import { formatDistanceToNow } from "date-fns";
+import { deleteReview } from "../services/reviewService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import RatingStars from "./RatingStars";
+import authService from "../services/authService";
 
 interface Props {
   reviews: Review[];
+  setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
 }
 
-export default function ReviewList({ reviews }: Props) {
+export default function ReviewList({ reviews, setReviews }: Props) {
+  const currentUser = authService.getCurrentUser();
+
   if (reviews.length === 0) return null;
+
+  async function handleDelete(reviewId: string) {
+    await deleteReview(reviewId);
+    setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+  }
 
   return (
     <div className="mt-6">
@@ -28,6 +40,15 @@ export default function ReviewList({ reviews }: Props) {
               {review.comment && (
                 <div className="text-sm">{review.comment}</div>
               )}
+              {currentUser &&
+                (review.userId === currentUser.id || currentUser.isAdmin) && (
+                  <button
+                    onClick={() => handleDelete(review.id)}
+                    className="text-error text-sm mt-1 cursor-pointer ml-auto"
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                )}
             </div>
           </li>
         ))}

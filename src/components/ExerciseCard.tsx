@@ -31,14 +31,14 @@ export default function ExerciseCard({ exercises, modalRef, onSelect }: Props) {
 
           <div className="relative z-10 px-3 py-2 h-full flex flex-col justify-between">
             <div>
-              <h2 className="text-md text-primary">{exercise.name}</h2>
+              <h2 className="text-md text-success">{exercise.name}</h2>
               <h2 className="text-sm card-title">
                 {exercise.date.split("T")[0]}
               </h2>
             </div>
             <div className="absolute top-2 right-2">
               <i
-                className="fas fa-pen text-amber-900 cursor-pointer"
+                className="fas fa-pen text-secondary cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelectExercise(exercise);

@@ -40,7 +40,7 @@ export default function Navbar() {
             className="input input-bordered w-full sm:w-64 md:w-72"
           />
           {user && (
-            <span className="text-sm font-semibold text-gray-700">
+            <span className="text-sm font-semibold text-secondary">
               {user.name}
             </span>
           )}

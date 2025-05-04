@@ -36,7 +36,7 @@ export default function ExerciseInfoPage() {
     if (!id) return;
 
     if (rating < 1) {
-      setError("Please select a rating before submitting.");
+      setError("Please select a rating before submitting");
       return;
     }
     setError("");
@@ -60,13 +60,12 @@ export default function ExerciseInfoPage() {
         {exerciseInfo.description && (
           <p className="text-left text-md mb-4">{exerciseInfo.description}</p>
         )}
-
         <form onSubmit={handleSubmit}>
           <RatingStars value={rating} onChange={setRating} />
           <CommentArea value={comment} onChange={setComment} />
           {error && <div className="text-error text-sm mt-1">{error}</div>}
-          <button type="submit" className="btn btn-primary mt-4">
-            Submit Review
+          <button type="submit" className="btn btn-success mt-2">
+            Submit
           </button>
         </form>
         <ReviewList reviews={reviews} />

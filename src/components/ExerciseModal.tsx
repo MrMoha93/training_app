@@ -148,14 +148,14 @@ export default function ExerciseModal({
           {selectedExercise ? (
             <button
               type="button"
-              className="btn btn-info mt-4"
+              className="btn btn-success mt-4"
               onClick={handleSubmit((data) => onSubmit(data))}
             >
               Confirm
             </button>
           ) : (
             <>
-              <button type="submit" className="btn btn-info mt-4">
+              <button type="submit" className="btn btn-success mt-4">
                 Save
               </button>
             </>

@@ -77,7 +77,7 @@ export default function ExercisesPage() {
       </h1>
       <div className="flex justify-center">
         <button
-          className="btn btn-primary mb-5"
+          className="btn btn-success mb-5"
           onClick={handleNewExerciseClick}
         >
           New Exercise

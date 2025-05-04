@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import auth from "../services/authService";
 
 const schema = z.object({
-  username: z.string().min(1, { message: "Username is required." }),
+  username: z.string().min(1, { message: "Username is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError,
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema), mode: "onChange" });
 
   async function onSubmit(data: FormData) {
@@ -51,10 +51,7 @@ export default function LoginPage() {
         <div className="text-center">
           <p className="mt-2 text-center text-sm text-secondary">
             Need an account?
-            <Link
-              to="/"
-              className="font-semibold text-primary hover:text-indigo-500 ml-1"
-            >
+            <Link to="/" className="font-semibold text-success ml-1">
               Register here
             </Link>
           </p>
@@ -75,7 +72,7 @@ export default function LoginPage() {
                 id="username"
                 type="text"
                 {...register("username")}
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-neutral-300 sm:text-sm"
               />
               {errors.username && (
                 <p className="text-error text-sm mt-1">
@@ -96,7 +93,7 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 {...register("password")}
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-neutral-300 sm:text-sm"
               />
               {errors.password && (
                 <p className="text-error text-sm mt-1">
@@ -108,8 +105,7 @@ export default function LoginPage() {
           <div>
             <button
               type="submit"
-              disabled={!isValid}
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="flex w-full justify-center rounded-md bg-success px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
             >
               Login
             </button>

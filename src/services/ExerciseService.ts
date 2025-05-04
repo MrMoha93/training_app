@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Exercise, ExerciseFormData } from "../types";
 import auth from "./authService";
+import { BASE_URL } from "../constants";
 
-const API_ENDPOINT = "http://localhost:6688/api/exercises";
+const API_ENDPOINT = `${BASE_URL}/api/exercises`;
 
 export function getExercises() {
   const token = auth.getJwt();

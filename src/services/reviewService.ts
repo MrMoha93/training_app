@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Review, ReviewFormData } from "../types";
 import auth from "./authService";
+import { BASE_URL } from "../constants";
 
-const API_ENDPOINT = "http://localhost:6688/api/reviews";
+const API_ENDPOINT = `${BASE_URL}/api/reviews`;
 
 export function getReviews(exerciseInfoId: string) {
   const token = auth.getJwt();

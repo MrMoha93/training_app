@@ -1,9 +1,10 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { User, UserLogin } from "../types";
+import { BASE_URL } from "../constants";
 
 const TOKEN_KEY = "token";
-const API_ENDPOINT = "http://localhost:6688/api/auth";
+const API_ENDPOINT = `${BASE_URL}/api/auth`;
 
 async function login(user: UserLogin) {
   const { data: token } = await axios.post(API_ENDPOINT, user);

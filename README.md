@@ -1,30 +1,34 @@
-# React + TypeScript + Vite
+## Live 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projektet är deployat och finns live på https://training-app-uczr.onrender.com/
+ 
+Backend delen hittar ni här: https://github.com/MrMoha93/training_app_backend
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Database Relations – Prisma modeller med relationer mellan users, reviews och exercises.
+- Supabase – PostgreSQL hosting via Supabase.
+- CRUD Operations - Skapa, hämta, uppdatera och radera övningar. 
+- Restful API - Endpoints för bl.a. övningar, användare, recensioner och bilder via Cloudinary.
+- User Authentication – Registrering, inloggning och tokens (JWT).
+- Protected Routes – Sidor tillgängliga endast för inloggade användare.
+- Middleware Protection – Endpoints skyddas via middleware för auth och admin.
+- Data Validation - Både på backend och på frontend med Zod + react-hook-form.
+- Responsive Design – Anpassad för både desktop och mobil med TailwindCSS + DaisyUI.
+- Search Input – Sök bland övningar.
+- Sorting - Baserat på datum.
+- Pagination - Antal övningar per sida. 
+- Sets - Lägg till sets för varje övning.
+- Exercise Info Pages – Visa beskrivning, betyg och kommentarer för kända övningar.
+- Post Reviews – Användare kan lämna betyg och kommentarer på övningar.
+- Conditional UI – Endast den som postat en recension (eller admin) kan ta bort den.
+- User Display – Visar inloggad användares namn i navbaren.
 
-## Expanding the ESLint configuration
+## Pages
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Registration Page - Registreringssidan. 
+- Login Page - Inloggningssidan. 
+- Exercises - Renderar befintliga övningar sparade i databasen samt möjligheten till att skapa, radera eller uppdatera en övning. 
+- Exercise - Detaljsida för varje övning, innehåller övningens namn, datum och sets.
+- Exercises Info - En lista över välkända övningar som bl.a. innehåller en kortfattad beskrivning, ett kommentarsfält och betygsättning. 
+- Exercise Info - Detaljsidan för en "Exercise Info övning". 

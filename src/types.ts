@@ -43,6 +43,11 @@ export interface ReviewFormData {
   comment?: string;
 }
 
+export interface SetFormData {
+  weight: number;
+  reps: number;
+}
+
 export interface User {
   id: string;
   name: string;

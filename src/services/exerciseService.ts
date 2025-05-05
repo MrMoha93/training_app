@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Exercise, ExerciseFormData } from "../types";
+import { Exercise, ExerciseFormData, SetFormData } from "../types";
 import auth from "./authService";
 import { BASE_URL } from "../constants";
 
@@ -35,6 +35,15 @@ export function saveExercise(exercise: ExerciseFormData) {
   }
 
   return axios.post<Exercise>(API_ENDPOINT, exercise, {
+    headers: {
+      "x-auth-token": token,
+    },
+  });
+}
+
+export function saveSet(id: string, setData: SetFormData) {
+  const token = auth.getJwt();
+  return axios.post<SetFormData>(`${API_ENDPOINT}/${id}/sets`, setData, {
     headers: {
       "x-auth-token": token,
     },

@@ -6,6 +6,7 @@ import {
   getExercise,
   getExercises,
 } from "../services/exerciseService";
+import SetModal from "../components/SetModal";
 
 export default function ExercisePage() {
   const { id } = useParams();
@@ -40,6 +41,14 @@ export default function ExercisePage() {
     navigate("/exercises", { state: { deletedId: id } });
   }
 
+  async function handleSave() {
+    if (!id) return;
+
+    const { data } = await getExercise(id);
+
+    setExercise(data);
+  }
+
   if (!exercise) return <h1>Loading exercise...</h1>;
 
   return (
@@ -70,10 +79,13 @@ export default function ExercisePage() {
         <div className="flex justify-start mt-4 text-error">
           {errorMessage && errorMessage}
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-between items-center mt-4">
           <button onClick={handleDelete} className="btn btn-error">
             Delete Exercise
           </button>
+          <div className="self-center">
+            <SetModal onSave={handleSave} sets={exercise.sets.length} />
+          </div>
         </div>
       </div>
     </div>

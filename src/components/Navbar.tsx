@@ -48,7 +48,7 @@ export default function Navbar() {
             to="/exercisesinfo"
             className="relative inline-block text-md font-semibold"
           >
-            EXERCISES-INFO
+            Info & Reviews
           </Link>
           {user && (
             <Link to="/logout" className="text-sm font-semibold text-secondary">

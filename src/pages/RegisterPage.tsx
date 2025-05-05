@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import user from "../services/userService";
+import { useState } from "react";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -16,6 +17,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,14 +30,24 @@ export default function RegisterPage() {
 
   async function onSubmit(data: FormData) {
     try {
+      setIsLoading(true);
       await user.register(data);
       navigate("/exercises");
     } catch (error: any) {
+      setIsLoading(false);
       if (error.response?.status === 400) {
         setError("username", { message: error.response.data });
       }
     }
   }
+
+  if (isLoading)
+    return (
+      <h1>
+        Loading... Please note: It may take up to a minute for the data to load
+        due to cold starts on Render
+      </h1>
+    );
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

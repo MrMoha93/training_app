@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import auth from "../services/authService";
+import { useState } from "react";
 
 const schema = z.object({
   username: z.string().min(1, { message: "Username is required" }),
@@ -15,6 +16,7 @@ type FormData = z.infer<typeof schema>;
 export default function LoginPage() {
   const user = auth.getCurrentUser();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     setError,
@@ -25,9 +27,11 @@ export default function LoginPage() {
 
   async function onSubmit(data: FormData) {
     try {
+      setIsLoading(true);
       await auth.login(data);
       navigate("/exercises");
     } catch (error: any) {
+      setIsLoading(false);
       if (error.response?.status === 400) {
         setError("username", { message: error.response.data });
       }
@@ -35,6 +39,13 @@ export default function LoginPage() {
   }
 
   if (user) return <Navigate to="/exercises" />;
+  if (isLoading)
+    return (
+      <h1>
+        Loading... Please note: It may take up to a minute for the data to load
+        due to cold starts on Render
+      </h1>
+    );
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -65,7 +76,7 @@ export default function LoginPage() {
               htmlFor="username"
               className="block text-sm font-medium text-gray-900"
             >
-              Username
+              Email address
             </label>
             <div className="mt-2">
               <input

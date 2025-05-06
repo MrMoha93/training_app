@@ -3,16 +3,14 @@ import { getExercise } from "../services/exerciseService";
 import Pagination, { PAGE_SIZE, paginate } from "../components/Pagination";
 import { Exercise } from "../types";
 import { useExercises } from "../context/ExerciseContext";
-import ExerciseModal from "../components/ExerciseModal";
-import ExerciseCard from "../components/ExerciseCard";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import NewExerciseModal from "../components/NewExerciseModal";
+import ExerciseCard from "../components/ExerciseCard";
 
 export default function ExercisesPage() {
   const { exercises, searchQuery, setExercises } = useExercises();
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
-    null
-  );
+
   const modalRef = useRef<HTMLDialogElement>(null);
   const resetRef = useRef<(() => void) | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,8 +19,8 @@ export default function ExercisesPage() {
   const location = useLocation();
   useEffect(() => {
     if (location.state?.deletedId) {
-      setExercises((preview) =>
-        preview.filter((e) => e.id !== location.state.deletedId)
+      setExercises((previous) =>
+        previous.filter((e) => e.id !== location.state.deletedId)
       );
 
       navigate(location.pathname, {
@@ -50,7 +48,6 @@ export default function ExercisesPage() {
   }
 
   function handleNewExerciseClick() {
-    setSelectedExercise(null);
     resetRef.current?.();
     modalRef.current?.showModal();
   }
@@ -84,18 +81,13 @@ export default function ExercisesPage() {
         </button>
       </div>
       <div className="flex justify-center">
-        <ExerciseModal
+        <NewExerciseModal
           onSave={handleSave}
           modalRef={modalRef}
-          selectedExercise={selectedExercise}
           onReset={(resetFn) => (resetRef.current = resetFn)}
         />
       </div>
-      <ExerciseCard
-        exercises={paginatedExercises}
-        modalRef={modalRef}
-        onSelect={setSelectedExercise}
-      />
+      <ExerciseCard exercises={paginatedExercises} />
       <div className="mt-6 flex justify-center">
         <Pagination
           totalCount={filtered.length}

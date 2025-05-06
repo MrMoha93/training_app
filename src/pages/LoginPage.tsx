@@ -41,10 +41,13 @@ export default function LoginPage() {
   if (user) return <Navigate to="/exercises" />;
   if (isLoading)
     return (
-      <h1>
-        Loading... Please note: It may take up to a minute for the data to load
-        due to cold starts on Render
-      </h1>
+      <div>
+        <h1 className="text-center text-2xl font-bold">Loading...</h1>
+        <h2 className="text-center text-md">
+          Please note: It may take up to a minute for the data to load due to
+          cold starts on Render
+        </h2>
+      </div>
     );
 
   return (

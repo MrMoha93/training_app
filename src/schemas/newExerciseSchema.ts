@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const exerciseSchema = z.object({
+export const newExerciseSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   date: z.string().min(1, { message: "Date is required" }),
   weight: z.coerce
@@ -30,4 +30,4 @@ export const exerciseSchema = z.object({
     .optional(),
 });
 
-export type FormData = z.infer<typeof exerciseSchema>;
+export type NewExerciseFormData = z.infer<typeof newExerciseSchema>;
